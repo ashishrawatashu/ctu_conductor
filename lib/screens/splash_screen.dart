@@ -9,9 +9,9 @@ class SplashScreen extends StatefulWidget {
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
+
+
 }
-
-
 
 class _SplashScreenState extends State<SplashScreen> {
 
@@ -48,9 +48,19 @@ class _SplashScreenState extends State<SplashScreen> {
                   margin: EdgeInsets.only(top: 250),
                   child: Column(
                     children: [
-                      Image.asset("assets/images/starbusNewLogo.png",height: 100,width: 150),
-                      Text("CTU Conductor",style: GoogleFonts.oleoScript(fontSize: 50,color: Colors.white),),
-
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/images/starbusNewLogo.png",height: 80,width: 120),
+                          Text("|",style: GoogleFonts.nunito(fontSize: 50,color: Colors.white,),),
+                          Text("ORBMS",style: GoogleFonts.nunito(fontSize: 30,color: Colors.white,fontWeight: FontWeight.bold),),
+                        ],
+                      ),
+                      Text("Parichalak",style: GoogleFonts.oleoScript(fontSize: 50,color: Colors.white),),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Chandighar Transport Undertaking",textAlign:TextAlign.center,style: GoogleFonts.nunito(fontSize: 30,color: Colors.white,fontWeight: FontWeight.bold),),
+                      ),
                     ],
                   ),
                 ),

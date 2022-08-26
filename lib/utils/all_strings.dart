@@ -82,8 +82,14 @@ class AllStrings {
 
 //
 
-  static const String welcomeBack = "Welcome to CTU Conductor ";
+  static const String IMEI_NO = "";
+  static const String TOKEN = "";
+  static const String USER_MOBILE_NO = "";
+  static const String welcomeBack = "This app is for the use of conductor to mange trip";
   static const String loginMsg = "Please eVerify Yourself with Registered Mobile Number and Trip Key Received in SMS as a result of Trip Chart Generation ";
   static const String mobileNo = "Mobile number";
   static const String signIn = "Log in";
+  static const String startTrip = "Start Trip";
+  static const String stopTrip = "Stop Trip";
+
 }
