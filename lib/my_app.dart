@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
                       .fontFamily,
                   primaryTextTheme: GoogleFonts.nunitoTextTheme()),
               // initialRoute: isSkipped=="true" ? MyRoutes.homeRoute : MyRoutes.introScreen,
-              initialRoute: MyRoutes.splashScreen,
+              initialRoute: MyRoutes.dashBoardScreen,
               routes: {
                 MyRoutes.splashScreen: (context) => const SplashScreen(),
                 MyRoutes.loginScreen: (context) => const LoginScreen(),

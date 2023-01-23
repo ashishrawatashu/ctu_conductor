@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'dart:math' as math;
 
+import 'package:url_launcher/url_launcher.dart';
+
 class TripChartScreen extends StatefulWidget {
   const TripChartScreen({Key? key}) : super(key: key);
 
@@ -104,7 +106,7 @@ class _TripChartScreenState extends State<TripChartScreen> {
     );
   }
 
-  showPassengerDetailsDilaog(CtuConductorProvider ctuConductorProvider){
+  showPassengerDetailsDilaog(CtuConductorProvider ctuConductorProvider, int index){
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -139,6 +141,32 @@ class _TripChartScreenState extends State<TripChartScreen> {
                           fontWeight: FontWeight.bold),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+
+                Row(
+                  children: [
+                    Text(
+                      "Mobile No : ",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: HexColor(MyColors.blackColor)),
+                    ),
+                    Expanded(
+                      child: Text(
+                        ctuConductorProvider.ticketsList[index].ctzmobileno!,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: HexColor(MyColors.blackColor),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 5,
                 ),
                 Row(
                   children: [
@@ -406,35 +434,66 @@ class _TripChartScreenState extends State<TripChartScreen> {
                       child: Text(
                         ctuConductorProvider.passengername,
                         style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 12,
                             color: HexColor(MyColors.blackColor),
                             fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(top: 20),
-                    height: 45,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: HexColor(MyColors.primaryColor),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "OK",
-                        style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                         launchCaller(ctuConductorProvider.ticketsList[index].ctzmobileno.toString());
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(top: 20,right: 5),
+                          height: 45,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(color:HexColor(MyColors.primaryColor))
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Call ",
+                              style: GoogleFonts.nunito(
+                                  fontSize: 16,
+                                  color: HexColor(MyColors.primaryColor),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(top: 20,left: 5),
+                          height: 45,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: HexColor(MyColors.primaryColor),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "OK",
+                              style: GoogleFonts.nunito(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -449,7 +508,7 @@ class _TripChartScreenState extends State<TripChartScreen> {
       await ctuConductorProvider.ticketsDetails(ctuConductorProvider.ticketsList[index].ticketno.toString());
       Navigator.pop(context);
       if(ctuConductorProvider.tripDetailsResponse.code=="100"){
-        showPassengerDetailsDilaog(ctuConductorProvider);
+        showPassengerDetailsDilaog(ctuConductorProvider,index);
       }else {
         CommonMethod.showSnackBar(context, "Something went wrong !");
       }
@@ -457,6 +516,16 @@ class _TripChartScreenState extends State<TripChartScreen> {
       CommonMethod.showNoInternetDialog(context);
     }
 
+  }
+
+  launchCaller(String mobileNo) async {
+    String urlName = "tel:"+mobileNo;
+    var url = urlName.toString();
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
 

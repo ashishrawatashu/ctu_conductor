@@ -1,8 +1,10 @@
+import 'package:ctu_conductor_app/response/help_desk_response.dart';
 import 'package:ctu_conductor_app/response/login_response.dart';
 import 'package:ctu_conductor_app/response/trip_details_response.dart';
 import 'package:ctu_conductor_app/response/trip_start_stop_response.dart';
 import 'package:ctu_conductor_app/response/trip_status_response.dart';
 import 'package:ctu_conductor_app/response/trip_tickets.dart';
+import 'package:ctu_conductor_app/screens/dashBoardScreen/helpDeskDataSource/help_desk_data_source.dart';
 import 'package:ctu_conductor_app/screens/dashBoardScreen/tripDetailsDataSource/trip_details_data_source.dart';
 import 'package:ctu_conductor_app/screens/dashBoardScreen/tripStartDataSource/trip_start_data_source.dart';
 import 'package:ctu_conductor_app/screens/dashBoardScreen/tripStatusDataSource/trip_status_data_source.dart';
@@ -60,6 +62,9 @@ class CtuConductorProvider extends ChangeNotifier {
     }
     return loginResponse;
   }
+
+
+
 
   //trip tickets
   List<Tickets> ticketsList = [];
@@ -228,6 +233,19 @@ class CtuConductorProvider extends ChangeNotifier {
   }
 
 
+  //start trip
+
+  HelpDeskResponse helpDeskResponse = HelpDeskResponse();
+  HelpDeskDataSource helpDeskDataSource = HelpDeskDataSource();
+  Future<HelpDeskResponse> helpDesk() async {
+    setLoading(true);
+    var response = await helpDeskDataSource.helpDeskApi();
+    print(response);
+    helpDeskResponse = HelpDeskResponse.fromJson(response);
+    return helpDeskResponse;
+  }
+
+
 
   checkTripStatus(){
     if(tripStatusResponse.trip![0].statuscode==0){
@@ -268,12 +286,36 @@ class CtuConductorProvider extends ChangeNotifier {
   concatString(){
     passengername = "";
     for(int i=0;i<ticketsDetailsList.length;i++){
-      passengername = passengername+", " + ticketsDetailsList[i].passengername.toString();
+      passengername = passengername+", " + ticketsDetailsList[i].passengername.toString()+"("+ ticketsDetailsList[i].age.toString()+")";
     }
 
     passengername = passengername.substring(1,passengername.length);
   }
 
+
+  chekHelpDeskCondition(){
+    if(helpDeskResponse.helpdesk![0].mobileNo!.length>3&&helpDeskResponse.helpdesk![0].emailId!.length>3){
+      return true;
+    }else {
+      return false;
+    }
+  }
+
+  chekHelpDeskMobileCondition(){
+    if(helpDeskResponse.helpdesk![0].mobileNo!.length>3){
+      return true;
+    }else {
+      return false;
+    }
+  }
+  
+  chekHelpDeskEmailCondition(){
+    if(helpDeskResponse.helpdesk![0].emailId!.length>3){
+      return true;
+    }else {
+      return false;
+    }
+  }
 
   bool _isLoading = true;
   get isLoading => _isLoading;

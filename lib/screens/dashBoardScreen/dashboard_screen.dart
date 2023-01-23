@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({Key? key}) : super(key: key);
@@ -69,18 +70,6 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
           appBar: AppBar(
             backgroundColor: HexColor(MyColors.primaryColor),
             automaticallyImplyLeading: false,
-            // title: Row(
-            //   children: [
-            //     Padding(
-            //       padding: const EdgeInsets.all(8.0),
-            //       child: Image.asset(ImagesPathStrings.buscircle,height: 40,width: 40,),
-            //     ),
-            //     Text("CTU Parichlak",style: TextStyle(
-            //         color: Colors.white,
-            //         fontSize: 18
-            //     ),)
-            //   ],
-            // ),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -155,7 +144,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 5.0,left: 15),
                                       child: Text(
-                                        ctuConductorProvider.conductor![0].tripcode.toString(),
+                                       " .tripcode.toString()",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                             fontSize: 16,
@@ -183,7 +172,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                           right: 15,
                                         ),
                                         child: Text(
-                                          ctuConductorProvider.conductor![0].tripdate.toString(),
+                                          ".tripdate.toString()",
                                           style: TextStyle(
                                               fontSize: 16,
                                               color: HexColor(MyColors.blackColor),
@@ -212,7 +201,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                    Padding(
                                     padding: const EdgeInsets.only(top: 3.0),
                                     child: Text(
-                                      ctuConductorProvider.ticketsList[0].fromstation.toString(),
+                                      "ctuConductorProvider.ticketsList[0].fromstation.toString()",
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                           fontSize: 16,
@@ -240,7 +229,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                             left: 15,
                                           ),
                                           child: Text(
-                                            ctuConductorProvider.conductor![0].depttime.toString(),
+                                            ".depttime.toString()",
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 color: HexColor(MyColors.blackColor),
@@ -274,7 +263,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                         Padding(
                                           padding: const EdgeInsets.only(top: 3.0),
                                           child: Text(
-                                            ctuConductorProvider.ticketsList[0].tostation.toString(),
+                                            "ctuConductorProvider.ticketsList[0].tostation.toString()",
                                             textAlign: TextAlign.end,
                                             style: TextStyle(
                                                 fontSize: 16,
@@ -292,7 +281,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                           Padding(
                                             padding: EdgeInsets.only(right: 15,),
                                             child: Text(
-                                              "Arrival Time",
+                                              "",
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   color: HexColor(MyColors.blackColor)),
@@ -303,7 +292,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                               right: 15,
                                             ),
                                             child: Text(
-                                              ctuConductorProvider.conductor![0].arrtime.toString(),
+                                              "",
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   color: HexColor(MyColors.blackColor),
@@ -320,14 +309,35 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                               child: Row(
                                 children: [
                                   Text(
-                                    "Total Passengers :  ",
+                                    "Total Tickets :  ",
                                     style: TextStyle(
                                         fontSize: 16,
                                         color:
                                         HexColor(MyColors.blackColor)),
                                   ),
                                   Text(
-                                    ctuConductorProvider.ticketsList.length.toString(),
+                                    "ctuConductorProvider.ticketsList.length.toString()",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: HexColor(MyColors.blackColor)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 15,top: 18),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "Bus No :  ",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color:
+                                        HexColor(MyColors.blackColor)),
+                                  ),
+                                  Text(
+                                    "ctuConductorProvider.ticketsList[0].busNo.toString()",
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -348,7 +358,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                         HexColor(MyColors.blackColor)),
                                   ),
                                   Text(
-                                    ctuConductorProvider.tripStatusResponse.trip![0].status.toString(),
+                                   " ctuConductorProvider.tripStatusResponse.trip![0].status.toString()",
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -417,127 +427,141 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                                 ),
                               ),
                             ),
-                            Visibility(
-                              visible: ctuConductorProvider.tripStatusResponse.trip![0].statuscode==2?false:true,
-                              child: InkWell(
-                                onTap: () {
-                                  checkTripStatus(ctuConductorProvider);
-                                },
-                                child: Container(
-                                  margin:
-                                      EdgeInsets.only(top: 30, left: 15, right: 15,bottom: 20),
-                                  // height: 90,
-                                  height: 60,
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: BoxDecoration(
-                                      // color: Colors.white,
-                                    color: HexColor(MyColors.primaryColor),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10.0),
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey,
-                                          blurRadius: 2.0,
-                                          spreadRadius: 0.0,
-                                          offset: Offset(1.0,
-                                              1.0), // shadow direction: bottom right
-                                        )
-                                      ]),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 18.0, left: 20),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              ctuConductorProvider.checkTripStatus(),
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.white),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                          child: Container(
-                                              padding: EdgeInsets.only(right: 20),
-                                              alignment: Alignment.centerRight,
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.end,
-                                                children: [
-                                                  Icon(
-                                                    Icons.arrow_forward_ios_outlined,color: Colors.white,),
-                                                  Icon(
-                                                    Icons.arrow_forward_ios_outlined,color: Colors.white,),
-                                                ],
-                                              )))
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
+                            // Visibility(
+                            //   visible: ctuConductorProvider.tripStatusResponse.trip![0].statuscode==2?false:true,
+                            //   child: InkWell(
+                            //     onTap: () {
+                            //       checkTripStatus(ctuConductorProvider);
+                            //     },
+                            //     child: Container(
+                            //       margin:
+                            //           EdgeInsets.only(top: 30, left: 15, right: 15,bottom: 20),
+                            //       // height: 90,
+                            //       height: 60,
+                            //       width: MediaQuery.of(context).size.width,
+                            //       decoration: BoxDecoration(
+                            //           // color: Colors.white,
+                            //         color: HexColor(MyColors.primaryColor),
+                            //           borderRadius: BorderRadius.all(
+                            //             Radius.circular(10.0),
+                            //           ),
+                            //           boxShadow: [
+                            //             BoxShadow(
+                            //               color: Colors.grey,
+                            //               blurRadius: 2.0,
+                            //               spreadRadius: 0.0,
+                            //               offset: Offset(1.0,
+                            //                   1.0), // shadow direction: bottom right
+                            //             )
+                            //           ]),
+                            //       child: Row(
+                            //         children: [
+                            //           Padding(
+                            //             padding: const EdgeInsets.only(
+                            //                 top: 18.0, left: 20),
+                            //             child: Column(
+                            //               crossAxisAlignment:
+                            //                   CrossAxisAlignment.start,
+                            //               children: [
+                            //                 Text(
+                            //                   ctuConductorProvider.checkTripStatus(),
+                            //                   style: TextStyle(
+                            //                       fontSize: 18,
+                            //                       color: Colors.white),
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //           ),
+                            //           Expanded(
+                            //               child: Container(
+                            //                   padding: EdgeInsets.only(right: 20),
+                            //                   alignment: Alignment.centerRight,
+                            //                   child: Row(
+                            //                     mainAxisAlignment: MainAxisAlignment.end,
+                            //                     children: [
+                            //                       Icon(
+                            //                         Icons.arrow_forward_ios_outlined,color: Colors.white,),
+                            //                       Icon(
+                            //                         Icons.arrow_forward_ios_outlined,color: Colors.white,),
+                            //                     ],
+                            //                   )))
+                            //         ],
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       )),
-                  Expanded(
-                    flex: 2,
-                    child: Container(
-                      // color: Colors.red,
-                      alignment: Alignment.bottomCenter,
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "For any Help/Query",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: HexColor(MyColors.primaryColor)),
-                                ),
-                                Text(
-                                  "Contact us at 1800 180 2051",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: HexColor(MyColors.primaryColor)),
-                                ),
-                                Text(
-                                  "Email at ctu-helpdesk@chd.nic.in",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: HexColor(MyColors.primaryColor)),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Container(
-                                    child: Card(child: Image.asset("assets/images/govsLogos.png",height: 45,width: 120,fit: BoxFit.fill,))),
-                              ),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: Container(
-                                    child: Image.asset("assets/images/nicNewLogo.png",height: 45,width: 120,fit: BoxFit.fill,)),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  )
+                  // Expanded(
+                  //   flex: 2,
+                  //   child: Container(
+                  //     // color: Colors.red,
+                  //     alignment: Alignment.bottomCenter,
+                  //     child: Stack(
+                  //       children: [
+                  //         Container(
+                  //           width: MediaQuery.of(context).size.width,
+                  //           child: Visibility(
+                  //             visible: ctuConductorProvider.chekHelpDeskCondition(),
+                  //             child: Column(
+                  //               crossAxisAlignment: CrossAxisAlignment.center,
+                  //               children: [
+                  //                 Text(
+                  //                   "For any Help/Query",
+                  //                   style: TextStyle(
+                  //                       fontSize: 16,
+                  //                       fontWeight: FontWeight.bold,
+                  //                       color: HexColor(MyColors.primaryColor)),
+                  //                 ),
+                  //                 Visibility(
+                  //                   visible: ctuConductorProvider.chekHelpDeskMobileCondition(),
+                  //                   child: GestureDetector(
+                  //                     onTap: (){
+                  //                       launchCaller(ctuConductorProvider.helpDeskResponse.helpdesk![0].mobileNo.toString());
+                  //                     },
+                  //                     child: Text(
+                  //                       "Contact us at "+ctuConductorProvider.helpDeskResponse.helpdesk![0].mobileNo.toString(),
+                  //                       style: TextStyle(
+                  //                           fontSize: 16,
+                  //                           fontWeight: FontWeight.bold,
+                  //                           color: HexColor(MyColors.primaryColor)),
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //                 Visibility(
+                  //                   visible: ctuConductorProvider.chekHelpDeskEmailCondition(),
+                  //                   child: Text(
+                  //                     "Email at "+ctuConductorProvider.helpDeskResponse.helpdesk![0].emailId.toString(),
+                  //                     style: TextStyle(
+                  //                         fontSize: 16,
+                  //                         fontWeight: FontWeight.bold,
+                  //                         color: HexColor(MyColors.primaryColor)),
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           children: [
+                  //             Align(
+                  //               alignment: Alignment.bottomLeft,
+                  //               child: Container(
+                  //                   child: Card(child: Image.asset("assets/images/govsLogos.png",height: 45,width: 120,fit: BoxFit.fill,))),
+                  //             ),
+                  //             Align(
+                  //               alignment: Alignment.bottomRight,
+                  //               child: Container(
+                  //                   child: Image.asset("assets/images/nicNewLogo.png",height: 45,width: 120,fit: BoxFit.fill,)),
+                  //             )
+                  //           ],
+                  //         )
+                  //       ],
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
             )),
@@ -608,7 +632,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      startTrip(ctuConductorProvider);
+                      // startTrip(ctuConductorProvider);
                     },
                     child: Container(
                       margin: EdgeInsets.only(top: 18),
@@ -778,7 +802,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      stopTrip(ctuConductorProvider);
+                      // stopTrip(ctuConductorProvider);
                     },
                     child: Container(
                       margin: EdgeInsets.only(top: 18),
@@ -807,78 +831,89 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     );
   }
 
-  void startTrip(CtuConductorProvider ctuConductorProvider) async{
-    if (await CommonMethod.getInternetUsingInternetConnectivity()) {
-      if (_startTripFormKey.currentState!.validate()) {
-        Navigator.pop(context);
-        CommonMethod.showLoadingDialog(context);
-        await ctuConductorProvider.startTrip(ctuConductorProvider.conductor![0].tripcode, ctuConductorProvider.conductor![0].conductid, _platformNoController.text.toString().trim(), _kmDrivenController.text.toString().trim());
-        Navigator.pop(context);
-        if (ctuConductorProvider.tripStartResponse.code=="100"){
-          CommonMethod.showSnackBar(context, "Trip is started");
-          _kmDrivenController.clear();
-          _platformNoController.clear();
-          await ctuConductorProvider.tripStatus(ctuConductorProvider.conductor![0].tripcode, ctuConductorProvider.conductor![0].conductid);
-        }else {
-          CommonMethod.showSnackBar(context, "Please try again !");
-        }
-      }
-    }else {
-      CommonMethod.showNoInternetDialog(context);
+  // void startTrip(CtuConductorProvider ctuConductorProvider) async{
+  //   if (await CommonMethod.getInternetUsingInternetConnectivity()) {
+  //     if (_startTripFormKey.currentState!.validate()) {
+  //       Navigator.pop(context);
+  //       CommonMethod.showLoadingDialog(context);
+  //       await ctuConductorProvider.startTrip(.tripcode, .conductid, _platformNoController.text.toString().trim(), _kmDrivenController.text.toString().trim());
+  //       Navigator.pop(context);
+  //       if (ctuConductorProvider.tripStartResponse.code=="100"){
+  //         CommonMethod.showSnackBar(context, "Trip is started");
+  //         _kmDrivenController.clear();
+  //         _platformNoController.clear();
+  //         await ctuConductorProvider.tripStatus(.tripcode, .conductid);
+  //       }else {
+  //         CommonMethod.showSnackBar(context, "Please try again !");
+  //       }
+  //     }
+  //   }else {
+  //     CommonMethod.showNoInternetDialog(context);
+  //   }
+  // }
+  //
+  // void stopTrip(CtuConductorProvider ctuConductorProvider) async{
+  //   if (await CommonMethod.getInternetUsingInternetConnectivity()) {
+  //     if (_stopTripFormKey.currentState!.validate()) {
+  //       Navigator.pop(context);
+  //       CommonMethod.showLoadingDialog(context);
+  //       await ctuConductorProvider.stopTrip(.tripcode.toString(),
+  //       .conductid.toString(),
+  //           _kmCloseingDrivenController.text.toString(),
+  //       _totalAmountNoController.text.toString(),
+  //       _totalTollController.text.toString(),
+  //       _parkingAmountController.text.toString(),
+  //       _otherAmountController.text.toString(),
+  //       " ");
+  //       Navigator.pop(context);
+  //       if (ctuConductorProvider.tripStopResponse.code=="100"){
+  //         CommonMethod.showSnackBar(context, "Trip is stopped");
+  //         _kmCloseingDrivenController.clear();
+  //         _totalAmountNoController.clear();
+  //         _totalTollController.clear();
+  //         _parkingAmountController.clear();
+  //         _otherAmountController.clear();
+  //         _reciptNoController.clear();
+  //         await ctuConductorProvider.tripStatus(.tripcode, .conductid);
+  //       }else {
+  //         CommonMethod.showSnackBar(context, "Please try again !");
+  //       }
+  //     }
+  //   }else {
+  //     CommonMethod.showNoInternetDialog(context);
+  //   }
+  // }
+  //
+  // void checkTripStatus(CtuConductorProvider ctuConductorProvider) async {
+  //   if (await CommonMethod.getInternetUsingInternetConnectivity()) {
+  //     CommonMethod.showLoadingDialog(context);
+  //     await ctuConductorProvider.tripStatus(.tripcode.toString(), .conductid.toString());
+  //     Navigator.pop(context);
+  //     if(ctuConductorProvider.tripStatusResponse.code=="100"){
+  //       if(ctuConductorProvider.tripStatusResponse.trip![0].statuscode==0){
+  //         startTripBottomSheet(ctuConductorProvider);
+  //       }else  if(ctuConductorProvider.tripStatusResponse.trip![0].statuscode==1){
+  //         // startTripBottomSheet(ctuConductorProvider);
+  //         stopTripBottomSheet(ctuConductorProvider);
+  //       }else {
+  //         CommonMethod.showSnackBar(context, "Trip has closed !");
+  //       }
+  //     }else {
+  //       CommonMethod.showSnackBar(context, "Something went wrong !");
+  //     }
+  //   }else {
+  //     CommonMethod.showNoInternetDialog(context);
+  //   }
+  // }
+
+  launchCaller(String mobileNo) async {
+    String urlName = "tel:"+mobileNo;
+    var url = urlName.toString();
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 
-  void stopTrip(CtuConductorProvider ctuConductorProvider) async{
-    if (await CommonMethod.getInternetUsingInternetConnectivity()) {
-      if (_stopTripFormKey.currentState!.validate()) {
-        Navigator.pop(context);
-        CommonMethod.showLoadingDialog(context);
-        await ctuConductorProvider.stopTrip(ctuConductorProvider.conductor![0].tripcode.toString(),
-        ctuConductorProvider.conductor![0].conductid.toString(),
-            _kmCloseingDrivenController.text.toString(),
-        _totalAmountNoController.text.toString(),
-        _totalTollController.text.toString(),
-        _parkingAmountController.text.toString(),
-        _otherAmountController.text.toString(),
-        " ");
-        Navigator.pop(context);
-        if (ctuConductorProvider.tripStopResponse.code=="100"){
-          CommonMethod.showSnackBar(context, "Trip is stopped");
-          _kmCloseingDrivenController.clear();
-          _totalAmountNoController.clear();
-          _totalTollController.clear();
-          _parkingAmountController.clear();
-          _otherAmountController.clear();
-          _reciptNoController.clear();
-          await ctuConductorProvider.tripStatus(ctuConductorProvider.conductor![0].tripcode, ctuConductorProvider.conductor![0].conductid);
-        }else {
-          CommonMethod.showSnackBar(context, "Please try again !");
-        }
-      }
-    }else {
-      CommonMethod.showNoInternetDialog(context);
-    }
-  }
-
-  void checkTripStatus(CtuConductorProvider ctuConductorProvider) async {
-    if (await CommonMethod.getInternetUsingInternetConnectivity()) {
-      CommonMethod.showLoadingDialog(context);
-      await ctuConductorProvider.tripStatus(ctuConductorProvider.conductor![0].tripcode.toString(), ctuConductorProvider.conductor![0].conductid.toString());
-      Navigator.pop(context);
-      if(ctuConductorProvider.tripStatusResponse.code=="100"){
-        if(ctuConductorProvider.tripStatusResponse.trip![0].statuscode==0){
-          startTripBottomSheet(ctuConductorProvider);
-        }else  if(ctuConductorProvider.tripStatusResponse.trip![0].statuscode==1){
-          // startTripBottomSheet(ctuConductorProvider);
-          stopTripBottomSheet(ctuConductorProvider);
-        }else {
-          CommonMethod.showSnackBar(context, "Trip has closed !");
-        }
-      }else {
-        CommonMethod.showSnackBar(context, "Something went wrong !");
-      }
-    }else {
-      CommonMethod.showNoInternetDialog(context);
-    }
-  }
 }

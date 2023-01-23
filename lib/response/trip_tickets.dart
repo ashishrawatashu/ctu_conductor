@@ -41,7 +41,8 @@ class Tickets {
       this.seatnumbers, 
       this.boardingstation, 
       this.fromstation, 
-      this.tostation,});
+      this.tostation,
+      this.busNo});
 
   Tickets.fromJson(dynamic json) {
     ticketno = json['TICKETNO'];
@@ -54,6 +55,7 @@ class Tickets {
     boardingstation = json['BOARDINGSTATION'];
     fromstation = json['FROMSTATION'];
     tostation = json['TOSTATION'];
+    busNo = json['BUSNO'];
   }
   String? ticketno;
   int? totalfareamt;
@@ -65,6 +67,7 @@ class Tickets {
   String? boardingstation;
   String? fromstation;
   String? tostation;
+  String? busNo;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -78,6 +81,7 @@ class Tickets {
     map['BOARDINGSTATION'] = boardingstation;
     map['FROMSTATION'] = fromstation;
     map['TOSTATION'] = tostation;
+    map['BUSNO'] = busNo;
     return map;
   }
 

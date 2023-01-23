@@ -313,6 +313,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await loginProvider.loginConductor(_phoneNumberController.text.toString().trim(), _passwordController.text.toString().trim());
         if (loginProvider.loginResponse.code == "100") {
           await loginProvider.getTripTickets();
+          await loginProvider.helpDesk();
           await loginProvider.tripStatus(loginProvider.conductor![0].tripcode.toString(), loginProvider.conductor![0].conductid.toString());
           Navigator.pop(context);
           if(loginProvider.tripTickets.code=="100"){
